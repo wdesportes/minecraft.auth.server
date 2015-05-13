@@ -83,6 +83,10 @@ function HashPassword($password) {
 	return md5(sha1($privateKey) . sha1($password));
 }
 
+function GenUUID() {
+	return md5(sha1($privateKey) . sha1(time()) . sha1($privateKey));
+}
+
 function GenClientToken() {
 	return md5(sha1($privateKey) . sha1(time()));
 }

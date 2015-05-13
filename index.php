@@ -8,9 +8,9 @@ $jsonData = Array(
 	"Runtime-Mode" => "productionMode",
 	"Application-Author" => "NathaanGaming",
 	"Application-Description" => "Remake of Mojang Authentication Server (Yggdrasil) for LaunchMyCraft.",
-	"Specification-Version" => "0.1",
+	"Specification-Version" => "0.2",
 	"Application-Name" => "launchmycraft.auth.server",
-	"Implementation-Version" => "0.1_beta",
+	"Implementation-Version" => "0.2_beta",
 	"Application-Owner" => "NathaanGaming"
 );
 

@@ -12,9 +12,12 @@ if (!$json) {
 	echo json_encode($jsonData);
 	die();
 }
-
 $json = json_decode($json, true);
-$exec = mysqli_query($MySQL_CONNECT, "SELECT *  FROM `users` WHERE `clientToken` = '".$json["clientToken"]."' AND `accessToken` = '".$json["accessToken"]."'");
+
+$accessToken = trim(mysqli_real_escape_string($MySQL_CONNECT, $json["accessToken"]));
+$clientToken = trim(mysqli_real_escape_string($MySQL_CONNECT, $json["clientToken"]));
+
+$exec = mysqli_query($MySQL_CONNECT, "SELECT *  FROM `tokens` WHERE `accessToken` = '".$accessToken."' AND `clientToken` = '".$clientToken."'");
 $data = @mysqli_fetch_array($exec);
 if ($exec == false) {
 	$jsonData = Array(
@@ -27,10 +30,7 @@ if ($exec == false) {
 		"errorMessage" => "Invalid token."
 	);
 } else {
-	if (isset($json["clientToken"]) && !empty($json["clientToken"])) {
-	$clientToken = GenClientToken();
-	$accessToken = GenAccessToken();
-	mysqli_query($MySQL_CONNECT, "UPDATE `users` SET `clientToken` = '".$clientToken."', `accessToken` = '".$accessToken."' WHERE `uuid`= '".$data["uuid"]."' LIMIT 1;");
+	mysqli_query($MySQL_CONNECT, "DELETE FROM `tokens` WHERE `accessToken` = '".$accessToken."' AND `clientToken` = '".$clientToken."'");
 	die();
 }
 

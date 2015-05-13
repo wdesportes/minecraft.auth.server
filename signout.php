@@ -14,8 +14,13 @@ if (!$json) {
 }
 
 $json = json_decode($json, true);
-$exec = mysqli_query($MySQL_CONNECT, "SELECT *  FROM `users` WHERE `username` = '".$json["username"]."'");
+
+$username = trim(mysqli_real_escape_string($MySQL_CONNECT, $json["username"]));
+$password = HashPassword(trim(mysqli_real_escape_string($MySQL_CONNECT, $json["password"])));
+
+$exec = mysqli_query($MySQL_CONNECT, "SELECT *  FROM `users` WHERE `username` = '".$username."'");
 $data = @mysqli_fetch_array($exec);
+
 if (!isset($json["username"])) {
 	$jsonData = Array(
 		"error" => "IllegalArgumentException",
@@ -47,10 +52,8 @@ if (!isset($json["username"])) {
 		"errorMessage" => "Invalid credentials. Invalid username or password."
 	);
 } else {
-	if ($data["password"] == HashPassword($json["password"])) {
-		$clientToken = GenClientToken();
-		$accessToken = GenAccessToken();
-		mysqli_query($MySQL_CONNECT, "UPDATE `users` SET `clientToken` = '".$clientToken."', `accessToken` = '".$accessToken."' WHERE `uuid`= '".$data["uuid"]."' LIMIT 1;");
+	if ($data["password"] == $password) {
+		mysqli_query($MySQL_CONNECT, "DELETE * FROM `tokens` WHERE `uuid` = '".$data["uuid"]."'");
 		die();
 	} else {
 		$jsonData = Array(
@@ -58,7 +61,6 @@ if (!isset($json["username"])) {
 			"errorMessage" => "Invalid credentials. Invalid username or password."
 		);
 	}
-
 }
 
 echo json_encode($jsonData);
