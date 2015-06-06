@@ -30,16 +30,18 @@ float:left; /* flottant à gauche */
 <input type="hidden" name="etape" value="1" />
 
 <label for="hote">Hôte :</label>
-<input type="text" name="hote" maxlength="40" /><br />
+<input type="text" name="hote" maxlength="40" /><br /><br />
+<label for="hote">Type :</label>
+<input type="text" name="type" maxlength="40" value="mysql" /><br /><br />
 
 <label for="port">Port (défaut 3306) :</label>
-<input tpye="text" name="port" maxlenght="40" /><br />
+<input tpye="text" name="port" maxlenght="40" value="3306" /><br /><br />
 
 <label for="login">Utilisateur :</label>
-<input type="text" name="login" maxlength="40" /><br />
+<input type="text" name="login" maxlength="40" /><br /><br />
 
 <label for="mdp">Mot de passe :</label>
-<input type="password" name="mdp" maxlength="40" /><br />
+<input type="password" name="mdp" maxlength="40" /><br /><br />
 
 <label for="base">Nom de la base :</label>
 <input type="text" name="base" maxlength="40" /><br /><br />
