@@ -4,8 +4,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Installation automatisée : 2nde étape</title>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Installation automatisÃ©e : 2nde Ã©tape</title>
 <style type="text/css">
 body {
 font-family:Tahoma, Arial, Serif;
@@ -30,17 +31,17 @@ font-weight:bold;
 <?php
 if(isset($_POST['etape']) AND $_POST['etape'] == 1) { // si nous venons du formulaire alors
 
-// on crée des constantes dont on se servira plus tard
+// on crÃ©e des constantes dont on se servira plus tard
 define('RETOUR', '<br /><br /><input type="button" value="Retour" onclick="history.back()">');
 define('OK', '<span class="ok">OK</span><br />');
 define('ECHEC', '<span class="echec">ECHEC</span>');
 
 $fichier = '../config.php';
 if(file_exists($fichier) AND filesize($fichier ) > 0) { // si le fichier existe et qu'il n'est pas vide alors
-exit('Fichier de configuration déjà existant. Installation interrompue.'. RETOUR);
+exit('Fichier de configuration dÃ©jÃ  existant. Installation interrompue.'. RETOUR);
 }	
 
-// on crée nos variables, et au passage on retire les éventuels espaces	
+// on crÃ©e nos variables, et au passage on retire les Ã©ventuels espaces	
 $hote = trim($_POST['hote']);
 $port = trim($_POST['port']);
 $login = trim($_POST['login']);
@@ -48,12 +49,12 @@ $mdp = trim($_POST['mdp']);
 $base = trim($_POST['base']);
 $key = trim($_POST['key']);
 
-// on vérifie la connectivité avec le serveur avant d'aller plus loin
+// on vÃ©rifie la connectivitÃ© avec le serveur avant d'aller plus loin
 if(!mysql_connect($hote, $login, $mdp)) {
-exit('Mauvais paramètres de connexion.'. RETOUR);
+exit('Mauvais paramÃ¨tres de connexion.'. RETOUR);
 }
 
-// on vérifie la connectivité avec la base avant d'aller plus loin	
+// on vÃ©rifie la connectivitÃ© avec la base avant d'aller plus loin	
 if(!mysql_select_db($base)) {
 exit('Mauvais nom de base.'. RETOUR);
 }	
@@ -96,42 +97,42 @@ function GenAccessToken() {
 }
 ?>';
 
-// on vérifie s'il est possible d'ouvrir le fichier
+// on vÃ©rifie s'il est possible d'ouvrir le fichier
 if(!$ouvrir = fopen($fichier, 'w')) {
 exit('Impossible d\'ouvrir le fichier : <strong>'. $fichier .'</strong>.'. RETOUR);
 }
 
-// s'il est possible d'écrire dans le fichier alors on ne se gêne pas
+// s'il est possible d'Ã©crire dans le fichier alors on ne se gÃªne pas
 if(fwrite($ouvrir, $texte) == FALSE) {
-exit('Impossible d\'écrire dans le fichier : <strong>'. $fichier .'</strong>.'. RETOUR);
+exit('Impossible d\'Ã©crire dans le fichier : <strong>'. $fichier .'</strong>.'. RETOUR);
 }
 
-// tout s'est bien passé
+// tout s'est bien passÃ©
 echo 'Fichier de configuration : '. OK;
 fclose($ouvrir); // on ferme le fichier
 	
 
-$requetes = ''; // on crée une variable vide car on va s'en servir après
+$requetes = ''; // on crÃ©e une variable vide car on va s'en servir aprÃ¨s
  
-$sql = file('./base.sql'); // on charge le fichier SQL qui contient des requêtes
+$sql = file('./base.sql'); // on charge le fichier SQL qui contient des requÃªtes
 foreach($sql as $lecture) { // on le lit
 	if(substr(trim($lecture), 0, 2) != '--') { // suppression des commentaires et des espaces
-	$requetes .= $lecture; // nous avons nos requêtes dans la variable
+	$requetes .= $lecture; // nous avons nos requÃªtes dans la variable
 	}
 }
  
-$reqs = split(';', $requetes); // on sépare les requêtes
-foreach($reqs as $req){	// et on les exécute
-	if(!mysql_query($req) AND trim($req) != '') { // si la requête fonctionne bien et qu'elle n'est pas vide
+$reqs = split(';', $requetes); // on sÃ©pare les requÃªtes
+foreach($reqs as $req){	// et on les exÃ©cute
+	if(!mysql_query($req) AND trim($req) != '') { // si la requÃªte fonctionne bien et qu'elle n'est pas vide
 		exit('ERREUR : '. $req); // message d'erreur
 	}
 }
 echo 'Installation : '. OK;	
-echo '<br /><span class="note">Note : si le site est en ligne, veuillez supprimer le répertoire <strong>/install</strong> du ftp.</span>';
+echo '<br /><span class="note">Note : si le site est en ligne, veuillez supprimer le rÃ©pertoire <strong>/install</strong> du ftp.</span>';
 
-} // si on passe sur ce fichier sans être passé par la première étape alors on redirige
+} // si on passe sur ce fichier sans Ãªtre passÃ© par la premiÃ¨re Ã©tape alors on redirige
 else
-exit('Vous devez d\'abord être passé par <a href="./index.php">le formulaire</a>.');	
+exit('Vous devez d\'abord Ãªtre passÃ© par <a href="./index.php">le formulaire</a>.');	
 ?>
 </p>
 </body>
