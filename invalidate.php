@@ -14,11 +14,13 @@ if (!$json) {
 }
 $json = json_decode($json, true);
 
-$accessToken = trim(mysqli_real_escape_string($MySQL_CONNECT, $json["accessToken"]));
-$clientToken = trim(mysqli_real_escape_string($MySQL_CONNECT, $json["clientToken"]));
+$accessToken = trim($json["accessToken"]);
+$clientToken = trim($json["clientToken"]);
 
-$exec = mysqli_query($MySQL_CONNECT, "SELECT *  FROM `tokens` WHERE `accessToken` = '".$accessToken."' AND `clientToken` = '".$clientToken."'");
-$data = @mysqli_fetch_array($exec);
+$exec = $_PDO->prepare( "SELECT *  FROM `tokens` WHERE `accessToken` = :accessToken AND `clientToken` = :clientToken");
+$exec = $exec->execute( array( 'accessToken' => $accessToken ,'clientToken' => $clientToken ) );
+$data = $exec->fetch(PDO::FETCH_ASSOC);
+
 if ($exec == false) {
 	$jsonData = Array(
 		"error" => "ForbiddenOperationException",
@@ -30,7 +32,8 @@ if ($exec == false) {
 		"errorMessage" => "Invalid token."
 	);
 } else {
-	mysqli_query($MySQL_CONNECT, "DELETE FROM `tokens` WHERE `accessToken` = '".$accessToken."' AND `clientToken` = '".$clientToken."'");
+	$exec = $_PDO->prepare( "DELETE FROM `tokens` WHERE `accessToken` = :accessToken AND `clientToken` = :clientToken");
+	$exec = $exec->execute();
 	die();
 }
 
