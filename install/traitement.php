@@ -43,6 +43,7 @@ exit('Fichier de configuration déjà existant. Installation interrompue.'. RETO
 
 // on crée nos variables, et au passage on retire les éventuels espaces	
 $hote = trim($_POST['hote']);
+$type = trim($_POST['type']);
 $port = trim($_POST['port']);
 $login = trim($_POST['login']);
 $mdp = trim($_POST['mdp']);
@@ -50,35 +51,43 @@ $base = trim($_POST['base']);
 $key = trim($_POST['key']);
 
 // on vérifie la connectivité avec le serveur avant d'aller plus loin
-if(!mysql_connect($hote, $login, $mdp)) {
-exit('Mauvais paramètres de connexion.'. RETOUR);
+try {
+	
+    $_PDO = new PDO(
+	$_CONFIG['bdd']['type'].':dbname='.$_CONFIG['bdd']['table'].';port='.$_CONFIG['bdd']['port'].';host='.$_CONFIG['bdd']['host'],
+	$_CONFIG['bdd']['username'],
+	$_CONFIG['bdd']['password']
+	);
+	$bdd->exec('SET NAMES utf8');
+} catch (PDOException $e) {
+    echo 'Connexion échouée : ' . $e->getMessage();
+    exit();
 }
-
-// on vérifie la connectivité avec la base avant d'aller plus loin	
-if(!mysql_select_db($base)) {
-exit('Mauvais nom de base.'. RETOUR);
-}	
 
 // le texte que l'on va mettre dans le config.php
 $texte = '<?PHP
 $privateKey = "'.$key.'";
 
-$MySQL_HOST = "'.$hote.'";
-$MySQL_PORT = '.$port.';
-$MySQL_USER = "'.$login.'";
-$MySQL_PASS = "'.$mdp.'";
-$MySQL_DB = "'.$base.'";
+$_CONFIG['bdd']['type']     = "'.$type.'";
+$_CONFIG['bdd']['host']     = "'.$hote.'";
+$_CONFIG['bdd']['port']     = '.$port.';
+$_CONFIG['bdd']['username'] = "'.$login.'";
+$_CONFIG['bdd']['password'] = "'.$mdp.'";
+$_CONFIG['bdd']['table']    = "'.$base.'";
 
 
 
-//
-// WARNING :
-//
-// EXPERIMENTAL !
-// They are functions, scripts, etc.
-//
-
-$MySQL_CONNECT = mysqli_connect($MySQL_HOST, $MySQL_USER, $MySQL_PASS, $MySQL_DB, $MySQL_PORT);
+try {
+	
+    $_PDO = new PDO(
+	$_CONFIG['bdd']['type'].':dbname='.$_CONFIG['bdd']['table'].';port='.$_CONFIG['bdd']['port'].';host='.$_CONFIG['bdd']['host'],
+	$_CONFIG['bdd']['username'],
+	$_CONFIG['bdd']['password']
+	);
+	$bdd->exec('SET NAMES utf8');
+} catch (PDOException $e) {
+    echo 'Connexion échouée : ' . $e->getMessage();
+}
 
 function HashPassword($password) {
 	return md5(sha1($privateKey) . sha1($password));
