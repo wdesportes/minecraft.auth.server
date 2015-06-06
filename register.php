@@ -20,7 +20,7 @@ if(isset($_POST["submit"])) {
 			die("Ce pseudo est incorrect");
 		}
 			$result = $_PDO->prepare( "INSERT INTO `users` (`uuid`, `username`, `password`) VALUES (:uuid, :username, :password);");
-			$result = $result->execute( array( 'uuid' => $uuid,'username' => $login,'password' => HashPassword($mdp)) );
+			$result->execute( array( 'uuid' => $uuid,'username' => $login,'password' => HashPassword($mdp)) );
 
 		if ($result == false) {
 			die("Une erreur est survenue.");
