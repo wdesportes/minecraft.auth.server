@@ -10,7 +10,7 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
--- Crée par NathaanGaming et mis a jour pour pdo par Wdes
+-- Crée par NathaanGaming et mis a jour pour PDO par Wdes
 --
 
 -- --------------------------------------------------------
