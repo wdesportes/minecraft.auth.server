@@ -1,6 +1,3 @@
-<?PHP
-?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -49,7 +46,12 @@ $login = trim($_POST['login']);
 $mdp = trim($_POST['mdp']);
 $base = trim($_POST['base']);
 $key = trim($_POST['key']);
-
+$_CONFIG["bdd"]["type"]     = $type;
+$_CONFIG["bdd"]["host"]     = $hote;
+$_CONFIG["bdd"]["port"]     = $port;
+$_CONFIG["bdd"]["username"] = $login;
+$_CONFIG["bdd"]["password"] = $mdp;
+$_CONFIG["bdd"]["table"]    = $base;
 // on vérifie la connectivité avec le serveur avant d'aller plus loin
 try {
 	
@@ -58,7 +60,7 @@ try {
 	$_CONFIG['bdd']['username'],
 	$_CONFIG['bdd']['password']
 	);
-	$bdd->exec('SET NAMES utf8');
+	$_PDO->exec('SET NAMES utf8');
 } catch (PDOException $e) {
     echo 'Connexion échouée : ' . $e->getMessage();
     exit();
@@ -68,25 +70,25 @@ try {
 $texte = '<?PHP
 $privateKey = "'.$key.'";
 
-$_CONFIG['bdd']['type']     = "'.$type.'";
-$_CONFIG['bdd']['host']     = "'.$hote.'";
-$_CONFIG['bdd']['port']     = '.$port.';
-$_CONFIG['bdd']['username'] = "'.$login.'";
-$_CONFIG['bdd']['password'] = "'.$mdp.'";
-$_CONFIG['bdd']['table']    = "'.$base.'";
+$_CONFIG["bdd"]["type"]     = "'.$type.'";
+$_CONFIG["bdd"]["host"]     = "'.$hote.'";
+$_CONFIG["bdd"]["port"]     = '.$port.';
+$_CONFIG["bdd"]["username"] = "'.$login.'";
+$_CONFIG["bdd"]["password"] = "'.$mdp.'";
+$_CONFIG["bdd"]["table"]    = "'.$base.'";
 
 
 
 try {
 	
     $_PDO = new PDO(
-	$_CONFIG['bdd']['type'].':dbname='.$_CONFIG['bdd']['table'].';port='.$_CONFIG['bdd']['port'].';host='.$_CONFIG['bdd']['host'],
-	$_CONFIG['bdd']['username'],
-	$_CONFIG['bdd']['password']
+	$_CONFIG["bdd"]["type"].":dbname=".$_CONFIG["bdd"]["table"].";port=".$_CONFIG["bdd"]["port"].";host=".$_CONFIG["bdd"]["host"],
+	$_CONFIG["bdd"]["username"],
+	$_CONFIG["bdd"]["password"]
 	);
-	$bdd->exec('SET NAMES utf8');
+	$_PDO->exec("SET NAMES utf8");
 } catch (PDOException $e) {
-    echo 'Connexion échouée : ' . $e->getMessage();
+    echo "Connexion échouée : " . $e->getMessage();
 }
 
 function HashPassword($password) {
@@ -132,7 +134,7 @@ foreach($sql as $lecture) { // on le lit
  
 $reqs = split(';', $requetes); // on sépare les requêtes
 foreach($reqs as $req){	// et on les exécute
-	if(!mysql_query($req) AND trim($req) != '') { // si la requête fonctionne bien et qu'elle n'est pas vide
+	if(!$_PDO->prepare($req)->execute() AND trim($req) != '') { // si la requête fonctionne bien et qu'elle n'est pas vide
 		exit('ERREUR : '. $req); // message d'erreur
 	}
 }
