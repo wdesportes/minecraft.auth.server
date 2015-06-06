@@ -1,2 +1,2 @@
-# launchmycraft.auth.server
-Yggdrasil remade 
+# wdes.auth.server
+Adaptation du service Yggdrasil pour pdo 
