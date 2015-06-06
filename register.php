@@ -3,28 +3,31 @@ include "config.php";
 
 if(isset($_POST["submit"])) {
 	if (isset($_POST["login"]) && !empty($_POST["login"]) && isset($_POST["mdp"]) && !empty($_POST["mdp"])) {
-		$login = trim(mysqli_real_escape_string($MySQL_CONNECT, $_POST["login"]));
-		$mdp = trim(mysqli_real_escape_string($MySQL_CONNECT, $_POST["mdp"]));
+		$login = trim($_POST["login"]);
+		$mdp = trim($_POST["mdp"]);
 		$uuid = GenUUID();
 		
-		$exec = mysqli_query($MySQL_CONNECT, "SELECT *  FROM `users` WHERE `username` = '".$login."'");
-		$data = @mysqli_fetch_array($exec);
+			$exec = $_PDO->prepare( "SELECT *  FROM `users` WHERE `username` = :username;");
+			$exec = $exec->execute( array( 'username' => $login) );
+			$data = $exec->fetch(PDO::FETCH_ASSOC);
 		if ($exec == false) {
-			die("Une erreur est survenue. Veuillez réssayer.");
+			die("Une erreur est survenue. Veuillez rÃ©ssayer.");
 		} elseif (count($data) > 0) {
-			die("Ce pseudo est déjà utilisé !");
+			die("Ce pseudo est dÃ©jÃ  utilisÃ© !");
 		}
 		$usernameCorrect = preg_match("/^([A-Za-z0-9_]+)$/", $login);
 		if ($usernameCorrect == 0) {
 			die("Ce pseudo est incorrect");
 		}
-		$result = mysqli_query($MySQL_CONNECT, "INSERT INTO `users` (`uuid`, `username`, `password`) VALUES ('".$uuid."', '".$login."', '".HashPassword($mdp)."');");
+			$result = $_PDO->prepare( "INSERT INTO `users` (`uuid`, `username`, `password`) VALUES (:uuid, :username, :password);");
+			$result = $result->execute( array( 'uuid' => $uuid,'username' => $login,'password' => HashPassword($mdp)) );
+
 		if ($result == false) {
 			die("Une erreur est survenue.");
 		}
-		die("Votre compte a été crée avec succès !");
+		die("Votre compte a Ã©tÃ© crÃ©e avec succÃ¨s !");
 	} else {
-		die("Une erreur est survenue. Veuillez réssayer.");
+		die("Une erreur est survenue. Veuillez rÃ©ssayer.");
 	}
 }
 ?>
@@ -47,13 +50,13 @@ label
 font-size:1.2em; /* taille du texte pour les "label" */
 display:block; /* on affiche les "label" en tant que block et non pas inline */ 
 width:150px; /* on leur met une taille pour aligner nos zones de texte */
-float:left; /* flottant à gauche */
+float:left; /* flottant Ã  gauche */
 }
 </style>
 </head>
 <body>
 
-<h1>Création d'un compte :</h1>
+<h1>CrÃ©ation d'un compte :</h1>
 <p>
 <form action="register.php" method="post">
 <p>
