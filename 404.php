@@ -6,6 +6,5 @@ $jsonData = Array(
 	"error" => "Not Found",
 	"errorMessage" => "The server has not found anything matching the request URI"
 );
-
 echo json_encode($jsonData);
 ?>
