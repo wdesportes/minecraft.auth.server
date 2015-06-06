@@ -15,15 +15,16 @@ if (!$json) {
 
 $json = json_decode($json, true);
 
-$username = trim(mysqli_real_escape_string($MySQL_CONNECT, $json["username"]));
-$password = HashPassword(trim(mysqli_real_escape_string($MySQL_CONNECT, $json["password"])));
+$username = trim($json["username"]);
+$password = HashPassword(trim($json["password"]));
+
 if (isset($json["clientToken"]) && !empty($json["clientToken"])) {
-	$clientToken = trim(mysqli_real_espace_string($MySQL_CONNECT, $json["clientToken"]));
+	$clientToken = trim($json["clientToken"]);
 }
 
-$exec = mysqli_query($MySQL_CONNECT, "SELECT *  FROM `users` WHERE `username` = '".$username."'");
-$data = @mysqli_fetch_array($exec);
-
+$exec = $_PDO->prepare( 'SELECT *  FROM `users` WHERE `username` = :username ' );
+$exec = $exec->execute( array( 'username' => $username ) );
+$data = $exec->fetch(PDO::FETCH_ASSOC);
 if (!isset($json["username"])) {
 	$jsonData = Array(
 		"error" => "IllegalArgumentException",
@@ -60,7 +61,8 @@ if (!isset($json["username"])) {
 			$clientToken = GenClientToken();
 		}
 		$accessToken = GenAccessToken();
-		mysqli_query($MySQL_CONNECT, "INSERT INTO `tokens` (`accessToken`, `clientToken`, `uuid`) VALUES ('".$accessToken."', '".$clientToken."', '".$data["uuid"]."');");
+		$exec = $_PDO->prepare( 'INSERT INTO `tokens` (`accessToken`, `clientToken`, `uuid`) VALUES (:accessToken, :clientToken, :uuid);' );
+		$exec = $exec->execute( array( 'accessToken' => $accessToken ,'clientToken' => $clientToken,'uuid'=>$data["uuid"]) );
 		$jsonData = Array(
 			"accessToken" => $accessToken,
 			"clientToken" => $clientToken,
