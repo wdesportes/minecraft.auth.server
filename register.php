@@ -6,10 +6,10 @@ if(isset($_POST["submit"])) {
 		$login = trim($_POST["login"]);
 		$mdp = trim($_POST["mdp"]);
 		$uuid = GenUUID();
-		
-			$exec = $_PDO->prepare( "SELECT *  FROM `users` WHERE `username` = :username;");
-			$exec = $exec->execute( array( 'username' => $login) );
-			$data = $exec->fetch(PDO::FETCH_ASSOC);
+    	$exec = $_PDO->prepare('SELECT * FROM users WHERE username = :username');
+    	$exec->execute(array( 'username' => $login) );
+    	$data = $exec->fetchAll(PDO::FETCH_ASSOC);
+
 		if ($exec == false) {
 			die("Une erreur est survenue. Veuillez réssayer.");
 		} elseif (count($data) > 0) {
@@ -19,7 +19,7 @@ if(isset($_POST["submit"])) {
 		if ($usernameCorrect == 0) {
 			die("Ce pseudo est incorrect");
 		}
-			$result = $_PDO->prepare( "INSERT INTO `users` (`uuid`, `username`, `password`) VALUES (:uuid, :username, :password);");
+			$result = $_PDO->prepare( "INSERT INTO users (uuid, username, password) VALUES (:uuid, :username, :password)");
 			$result->execute( array( 'uuid' => $uuid,'username' => $login,'password' => HashPassword($mdp)) );
 
 		if ($result == false) {
