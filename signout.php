@@ -15,12 +15,12 @@ if (!$json) {
 
 $json = json_decode($json, true);
 
-$username = trim(mysqli_real_escape_string($MySQL_CONNECT, $json["username"]));
-$password = HashPassword(trim(mysqli_real_escape_string($MySQL_CONNECT, $json["password"])));
+$username = trim($json["username"]);
+$password = HashPassword(trim($json["password"]));
 
-$exec = mysqli_query($MySQL_CONNECT, "SELECT *  FROM `users` WHERE `username` = '".$username."'");
-$data = @mysqli_fetch_array($exec);
-
+$exec = $_PDO->prepare( 'SELECT *  FROM `users` WHERE `username` = :username ' );
+$exec = $exec->execute( array( 'username' => $username ) );
+$data = $exec->fetch(PDO::FETCH_ASSOC);
 if (!isset($json["username"])) {
 	$jsonData = Array(
 		"error" => "IllegalArgumentException",
@@ -53,7 +53,8 @@ if (!isset($json["username"])) {
 	);
 } else {
 	if ($data["password"] == $password) {
-		mysqli_query($MySQL_CONNECT, "DELETE * FROM `tokens` WHERE `uuid` = '".$data["uuid"]."'");
+		$exec = $_PDO->prepare( 'DELETE * FROM `tokens` WHERE `uuid` = :uuid ' );
+		$exec = $exec->execute( array( 'uuid' => $data["uuid"] ) );
 		die();
 	} else {
 		$jsonData = Array(
