@@ -1,5 +1,5 @@
 RewriteBase /
-RewriteEngine on 
+RewriteEngine on
 ErrorDocument 404 /404.php
 RewriteCond %{REQUEST_FILENAME} !-d 
 RewriteCond %{REQUEST_FILENAME}\.php -f 
