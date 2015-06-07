@@ -16,9 +16,8 @@ $json = json_decode($json, true);
 
 $accessToken = trim($json["accessToken"]);
 $clientToken = trim($json["clientToken"]);
-
-$exec = $_PDO->prepare( "SELECT *  FROM `tokens` WHERE `accessToken` = :accessToken AND `clientToken` = :clientToken");
-$exec = $exec->execute( array( 'accessToken' => $accessToken ,'clientToken' => $clientToken ) );
+$exec = $_PDO->prepare( 'SELECT * FROM tokens WHERE accessToken = :accessToken AND clientToken = :clientToken' );
+$exec->execute( array( 'accessToken' => $accessToken ,'clientToken' => $clientToken )  );
 $data = $exec->fetch(PDO::FETCH_ASSOC);
 
 if ($exec == false) {
@@ -32,15 +31,24 @@ if ($exec == false) {
 		"errorMessage" => "Invalid token."
 	);
 } else {
-	$newClientToken = GenClientToken();
+	//$newClientToken = GenClientToken();
 	$newAccessToken = GenAccessToken();
-	$exec = $_PDO->prepare( "UPDATE `tokens` SET `accessToken` = :accessToken, `clientToken` = :clientToken  WHERE `uuid` = :uuid;");
-	$exec = $exec->execute( array( 'accessToken' => $accessToken ,'clientToken' => $clientToken ,'uuid' => $data["uuid"]) );
-	$data = $exec->fetch(PDO::FETCH_ASSOC);
+	$exec = $_PDO->prepare( "UPDATE tokens SET accessToken = :accessToken  WHERE uuid = :uuid");
+	$exec->execute( array( 'accessToken' => $newAccessToken ,'uuid' => $data["uuid"]) );
 	$jsonData = Array(
-		"accessToken" => $newAccessToken,
-		"clientToken" => $newClientToken
-	);
+			"accessToken" => $newAccessToken,
+			"clientToken" => $clientToken,
+			"selectedProfile" => Array(
+				"id" => $data["uuid"],
+				"name" => $data["username"]
+			),
+			"availableProfiles" => Array(
+				Array(
+					"id" => $data["uuid"],
+					"name" => $data["username"]
+				)
+			)
+		);
 }
 
 echo json_encode($jsonData);
