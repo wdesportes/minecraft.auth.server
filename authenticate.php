@@ -61,8 +61,8 @@ if (!isset($json["username"])) {
 			$clientToken = GenClientToken();
 		}
 		$accessToken = GenAccessToken();
-		$exec = $_PDO->prepare( 'INSERT INTO tokens (accessToken, clientToken, uuid) VALUES (:accessToken, :clientToken, :uuid);' );
-		$exec = $exec->execute( array( 'accessToken' => $accessToken ,'clientToken' => $clientToken,'uuid'=>$data["uuid"]) );
+		$exec = $_PDO->prepare( 'INSERT INTO tokens (accessToken, clientToken, uuid, username) VALUES (:accessToken, :clientToken, :uuid, :username);' );
+		$exec = $exec->execute( array( 'accessToken' => $accessToken ,'clientToken' => $clientToken,'uuid'=>$data["uuid"],'username'=>$username) );
 		$jsonData = Array(
 			"accessToken" => $accessToken,
 			"clientToken" => $clientToken,
