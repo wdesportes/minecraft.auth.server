@@ -132,7 +132,7 @@ foreach($sql as $lecture) { // on le lit
 	}
 }
  
-$reqs = split(';', $requetes); // on sépare les requêtes
+$reqs = @split(';', $requetes); // on sépare les requêtes
 foreach($reqs as $req){	// et on les exécute
 	if(!$_PDO->prepare($req)->execute() AND trim($req) != '') { // si la requête fonctionne bien et qu'elle n'est pas vide
 		exit('ERREUR : '. $req); // message d'erreur
