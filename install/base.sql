@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   `accessToken` char(32) COLLATE latin1_general_ci NOT NULL,
   `clientToken` char(255) COLLATE latin1_general_ci NOT NULL,
   `uuid` char(32) COLLATE latin1_general_ci NOT NULL,
+  `username` char(16) COLLATE latin1_general_ci NOT NULL,
   UNIQUE KEY `accessToken` (`accessToken`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
