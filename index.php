@@ -46,7 +46,7 @@ $controller = match ($path) {
     '/invalidate',   '/invalidate.php'   => new InvalidateController($storage),
     '/signout',      '/signout.php'      => new SignoutController($storage),
 
-    default => new NotFoundController(),
+    default => new NotFoundController($path),
 };
 
 $controller->handle();
