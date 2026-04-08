@@ -97,7 +97,7 @@ final class RegisterController extends Controller
         <body>
             <h1>Create account</h1>
             {$errorHtml}
-            <form method="post" action="/register.php">
+            <form method="post" action="./register.php">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" maxlength="16" required>
                 <label for="password">Password</label>

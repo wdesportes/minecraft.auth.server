@@ -13,14 +13,14 @@ Visit `/register` to create the first account.
 
 ## Endpoints
 
-| Method | Path                      | Body fields                            |
-|--------|---------------------------|----------------------------------------|
-| GET    | /                         | —                                      |
-| POST   | /authenticate             | `username`, `password`, `clientToken`? |
-| POST   | /refresh                  | `accessToken`, `clientToken`           |
-| POST   | /invalidate               | `accessToken`, `clientToken`           |
-| POST   | /signout                  | `username`, `password`                 |
-| GET/POST | /register               | form: `username`, `password`           |
+| Method   | Path                                   | Body fields                            |
+|----------|----------------------------------------|----------------------------------------|
+| GET      | `/` or `/index.php`                    | n/a                                    |
+| POST     | `/authenticate` or `/authenticate.php` | `username`, `password`, `clientToken`? |
+| POST     | `/refresh or `/refresh.php`            | `accessToken`, `clientToken`           |
+| POST     | `/invalidate or `/invalidate.php`      | `accessToken`, `clientToken`           |
+| POST     | `/signout` or `/signout.php`           | `username`, `password`                 |
+| GET/POST | `/register` or `/register.php`         | form: `username`, `password`           |
 
 ## Swapping the storage backend
 
