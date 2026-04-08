@@ -34,6 +34,7 @@ const DATA_DIR = __DIR__ . '/storage';
 
 $storage = new FileStorage(DATA_DIR);
 $path    = (string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
+$path    = '/' . basename($path);
 
 // ── Router ────────────────────────────────────────────────────────────────────
 
