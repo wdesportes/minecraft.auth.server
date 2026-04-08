@@ -14,8 +14,8 @@ use function parse_url;
 
 // ── Autoload ──────────────────────────────────────────────────────────────────
 
-require_once __DIR__ . '/storage/StorageInterface.php';
-require_once __DIR__ . '/storage/FileStorage.php';
+require_once __DIR__ . '/src/Storage/StorageInterface.php';
+require_once __DIR__ . '/src/Storage/FileStorage.php';
 require_once __DIR__ . '/src/Helpers.php';
 require_once __DIR__ . '/src/Controller/Controller.php';
 require_once __DIR__ . '/src/Controller/IndexController.php';
