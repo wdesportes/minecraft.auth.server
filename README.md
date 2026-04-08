@@ -8,8 +8,9 @@ Yggdrasil-compatible authentication server. PHP 8.4, strict types, PSR-12, front
 chmod 750 storage/
 ```
 
-`storage/` must be writable by the web server. It is git-ignored by default.  
-Visit `/register` to create the first account.
+The `storage/` folder must be writable by the web server. It is git-ignored by default.
+
+Visit `/register.php` to create your account.
 
 ## Endpoints
 
@@ -17,8 +18,8 @@ Visit `/register` to create the first account.
 |----------|----------------------------------------|----------------------------------------|
 | GET      | `/` or `/index.php`                    | n/a                                    |
 | POST     | `/authenticate` or `/authenticate.php` | `username`, `password`, `clientToken`? |
-| POST     | `/refresh or `/refresh.php`            | `accessToken`, `clientToken`           |
-| POST     | `/invalidate or `/invalidate.php`      | `accessToken`, `clientToken`           |
+| POST     | `/refresh` or `/refresh.php`            | `accessToken`, `clientToken`           |
+| POST     | `/invalidate` or `/invalidate.php`      | `accessToken`, `clientToken`           |
 | POST     | `/signout` or `/signout.php`           | `username`, `password`                 |
 | GET/POST | `/register` or `/register.php`         | form: `username`, `password`           |
 
