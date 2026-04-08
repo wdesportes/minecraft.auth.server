@@ -14,7 +14,7 @@ final class IndexController extends Controller
             'Application-Description' => 'Yggdrasil-compatible authentication server.',
             'Specification-Version'   => '1.0',
             'Application-Name'        => 'wdes.auth.server',
-            'Implementation-Version'  => '1.0',
+            'Implementation-Version'  => '2.0',
         ]);
     }
 }
